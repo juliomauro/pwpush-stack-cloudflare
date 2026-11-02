@@ -1,0 +1,50 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    networks:
+      - pwpush_net
+    depends_on:
+      - pwpush
+
+  pwpush:
+    image: docker.io/pglombardo/pwpush:latest
+    restart: unless-stopped
+    platform: linux/amd64
+    ports:
+      - "5100:5100"   # optional local LAN access via http://<host-ip>:5100, remove if not needed
+    volumes:
+      # persists the SQLite database and any uploaded files, do NOT mount
+      # anything over /opt/PasswordPusher/db, that hides migration files
+      - pwpush_storage:/opt/PasswordPusher/storage
+    environment:
+      # encryption key for push payloads in the database, generate one with
+      # `docker compose run --rm pwpush bin/pwpush secret` and keep it, losing
+      # it makes existing pushes unreadable
+      PWPUSH_MASTER_KEY: ${PWPUSH_MASTER_KEY}
+      # without this, a random key is generated on every container start
+      # and every logged-in session is invalidated on restart
+      SECRET_KEY_BASE: ${PWPUSH_SECRET_KEY_BASE}
+      # used to build the links pwpush shows you after creating a push, must
+      # match the public hostname from the Cloudflare Tunnel setup
+      PWP__HOST_DOMAIN: ${PWPUSH_DOMAIN}
+      PWP__HOST_PROTOCOL: https
+    healthcheck:
+      # the app listens on 5100 inside the container regardless of the host
+      # port mapping above
+      test: ["CMD", "curl", "-f", "http://localhost:5100/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - pwpush_net
+
+networks:
+  pwpush_net:
+
+volumes:
+  pwpush_storage:

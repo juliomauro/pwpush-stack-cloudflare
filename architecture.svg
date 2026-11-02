@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f97316"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="620" fill="#ffffff"/>
+
+  <!-- Browser -->
+  <rect x="40" y="40" width="200" height="110" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="60" y="75" font-size="18" font-weight="700" fill="#1e293b">Browser</text>
+  <text x="60" y="100" font-size="13" fill="#64748b">you, from anywhere</text>
+  <text x="60" y="120" font-size="12" fill="#64748b" font-family="ui-monospace, monospace">https://push.example.com</text>
+
+  <!-- Cloudflare Edge -->
+  <rect x="420" y="40" width="300" height="140" rx="14" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="440" y="72" font-size="18" font-weight="700" fill="#9a3412">Cloudflare Edge</text>
+  <text x="440" y="97" font-size="13" fill="#9a3412">DNS for push.example.com</text>
+  <text x="440" y="118" font-size="13" fill="#9a3412">Automatic TLS certificate</text>
+  <text x="440" y="139" font-size="13" fill="#9a3412">Bridges the two outbound connections</text>
+
+  <!-- Arrow 1: Browser -> Cloudflare Edge -->
+  <line x1="240" y1="100" x2="412" y2="100" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-grey)"/>
+  <text x="248" y="88" font-size="12.5" fill="#475569">1 - normal HTTPS request</text>
+
+  <!-- Arrow 2: Cloudflare Edge -> cloudflared (dashed, orange) -->
+  <line x1="570" y1="182" x2="453" y2="328" stroke="#f97316" stroke-width="2.2" stroke-dasharray="7 6" marker-end="url(#arrow-orange)"/>
+  <text x="565" y="250" font-size="12.5" fill="#c2410c">2 - outbound tunnel, started by</text>
+  <text x="565" y="267" font-size="12.5" fill="#c2410c">cloudflared, always open</text>
+
+  <!-- Home network outer box -->
+  <rect x="40" y="230" width="920" height="350" rx="16" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="60" y="262" font-size="15" font-weight="700" fill="#334155">HOME NETWORK (CGNAT, no public IP)</text>
+
+  <!-- Router / Modem -->
+  <rect x="70" y="290" width="180" height="100" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="90" y="328" font-size="15" font-weight="700" fill="#1e293b">Router / Modem</text>
+  <text x="90" y="352" font-size="13" fill="#64748b">0 ports forwarded</text>
+
+  <!-- Docker host inner box -->
+  <rect x="290" y="280" width="620" height="260" rx="14" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="310" y="308" font-size="14.5" font-weight="700" fill="#334155">DOCKER HOST — docker compose up -d</text>
+
+  <!-- cloudflared -->
+  <rect x="320" y="335" width="250" height="150" rx="12" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="340" y="368" font-size="15.5" font-weight="700" fill="#9a3412">cloudflared</text>
+  <text x="340" y="392" font-size="12.5" fill="#9a3412">keeps the tunnel open</text>
+  <text x="340" y="412" font-size="12.5" fill="#9a3412">outbound connection 24/7</text>
+
+  <!-- pwpush -->
+  <rect x="630" y="335" width="250" height="150" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="650" y="368" font-size="15.5" font-weight="700" fill="#1e293b">pwpush</text>
+  <text x="650" y="392" font-size="12.5" fill="#64748b">Password Pusher</text>
+  <text x="650" y="412" font-size="12.5" fill="#64748b">:5100</text>
+  <text x="650" y="432" font-size="12.5" fill="#64748b">SQLite + uploads on a volume</text>
+
+  <!-- arrow cloudflared -> pwpush -->
+  <line x1="572" y1="410" x2="622" y2="410" stroke="#64748b" stroke-width="1.8" marker-end="url(#arrow-grey)"/>
+  <text x="577" y="398" font-size="11.5" fill="#475569">http :5100</text>
+
+  <!-- footer note -->
+  <text x="60" y="605" font-size="12" fill="#94a3b8">Both the browser and cloudflared only open outbound connections toward Cloudflare — nothing connects inbound into the home network.</text>
+</svg>
