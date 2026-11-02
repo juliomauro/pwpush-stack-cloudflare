@@ -27,7 +27,15 @@ services:
       # persists the SQLite database and any uploaded files, do NOT mount
       # anything over /opt/PasswordPusher/db, that hides migration files
       - pwpush_storage:/opt/PasswordPusher/storage
+      # optional custom branding, see "Custom styling" in the README
+      - ./custom.css:/opt/PasswordPusher/app/assets/stylesheets/custom.css:ro
     environment:
+      # PWP__THEME must be set to some Bootswatch skin for assets to
+      # precompile on boot, even when only custom.css is used, see README
+      PWP__THEME: slate
+      PWP__THEME_MODE: dark
+      PWP__BRAND__TITLE: PWPUSH
+      PWP__BRAND__TAGLINE: "one-time secrets, self-hosted."
       # encryption key for push payloads in the database, generate one with
       # `docker compose run --rm pwpush bin/pwpush secret` and keep it, losing
       # it makes existing pushes unreadable

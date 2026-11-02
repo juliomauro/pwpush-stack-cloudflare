@@ -1,0 +1,157 @@
+/* oruam.cloud visual identity for Password Pusher.
+   Bind-mounted over the app's own stylesheet, see README.
+   The Bootswatch "slate" base theme compiles its component colors as
+   fixed values, not runtime CSS variables, so most rules here target
+   the actual component classes directly (with !important) instead of
+   relying on Bootstrap variable overrides, which the compiled theme
+   mostly ignores. */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --oruam-bg: #f5f2eb;
+  --oruam-surface: #eae6db;
+  --oruam-surface-2: #ded8c7;
+  --oruam-border: #b0a888;
+  --oruam-fg: #1a3a28;
+  --oruam-fg-dim: #5a7a68;
+  --oruam-accent: #1a5c3a;
+  --oruam-accent-hover: #2a7a50;
+  --oruam-glow: none;
+}
+
+[data-bs-theme="dark"] {
+  --oruam-bg: #000308;
+  --oruam-surface: #020810;
+  --oruam-surface-2: #001540;
+  --oruam-border: #003388;
+  --oruam-fg: #00bbee;
+  --oruam-fg-dim: #0088bb;
+  --oruam-accent: #00b4ff;
+  --oruam-accent-hover: #4dd4ff;
+  --oruam-glow: 0 0 8px #00b4ff, 0 0 20px #00b4ff88, 0 0 40px #00b4ff44;
+}
+
+body {
+  font-family: 'Share Tech Mono', monospace !important;
+  background-color: var(--oruam-bg) !important;
+  color: var(--oruam-fg) !important;
+}
+
+/* drop the default padlock logo, text-only branding */
+.brand-logo {
+  display: none !important;
+}
+
+header .fs-4.fw-semibold {
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 900 !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--oruam-accent) !important;
+  text-shadow: var(--oruam-glow);
+}
+
+header .small.text-muted {
+  font-family: 'Share Tech Mono', monospace !important;
+  letter-spacing: 0.5px;
+  color: var(--oruam-fg-dim) !important;
+}
+
+/* borders (panels, header/footer rules, dividers) */
+.border, .border-top, .border-bottom, .border-start, .border-end,
+header, footer {
+  border-color: var(--oruam-border) !important;
+}
+
+/* text inputs and textareas */
+.form-control, .form-select {
+  background-color: var(--oruam-surface) !important;
+  color: var(--oruam-fg) !important;
+  border-color: var(--oruam-border) !important;
+  font-family: 'Share Tech Mono', monospace;
+}
+.form-control::placeholder {
+  color: var(--oruam-fg-dim) !important;
+  opacity: 0.8;
+}
+.form-control:focus, .form-select:focus {
+  background-color: var(--oruam-surface) !important;
+  color: var(--oruam-fg) !important;
+  border-color: var(--oruam-accent) !important;
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--oruam-accent) 25%, transparent) !important;
+}
+
+/* input-group addon labels (e.g. the "Passphrase" prefix) */
+.input-group-text {
+  background-image: none !important;
+  background-color: var(--oruam-surface-2) !important;
+  color: var(--oruam-fg) !important;
+  border-color: var(--oruam-border) !important;
+}
+
+/* buttons. The Bootswatch "slate" base theme paints every .btn-* with its
+   own background-image gradient, which sits on top of and hides a plain
+   background-color override, so every rule below also has to kill it. */
+.btn {
+  background-image: none !important;
+  filter: none !important;
+}
+.btn-primary {
+  background-color: var(--oruam-accent) !important;
+  border-color: var(--oruam-accent) !important;
+  color: var(--oruam-bg) !important;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: var(--oruam-accent-hover) !important;
+  border-color: var(--oruam-accent-hover) !important;
+  color: var(--oruam-bg) !important;
+}
+.btn-outline-primary {
+  background-color: transparent !important;
+  color: var(--oruam-accent) !important;
+  border-color: var(--oruam-accent) !important;
+}
+.btn-outline-primary:hover, .btn-outline-primary:active {
+  background-color: var(--oruam-surface-2) !important;
+  color: var(--oruam-accent) !important;
+}
+.btn-outline-secondary {
+  background-color: transparent !important;
+  color: var(--oruam-fg) !important;
+  border-color: var(--oruam-border) !important;
+}
+.btn-outline-secondary:hover, .btn-outline-secondary:active {
+  background-color: var(--oruam-surface-2) !important;
+  border-color: var(--oruam-accent) !important;
+  color: var(--oruam-fg) !important;
+}
+
+/* day/views count pills */
+.badge.bg-primary {
+  background-color: transparent !important;
+  border: 1px solid var(--oruam-accent);
+  color: var(--oruam-accent) !important;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 400;
+}
+
+/* day/views range sliders */
+.form-range::-webkit-slider-runnable-track { background-color: var(--oruam-border) !important; }
+.form-range::-moz-range-track { background-color: var(--oruam-border) !important; }
+.form-range::-webkit-slider-thumb { background-color: var(--oruam-accent) !important; }
+.form-range::-moz-range-thumb { background-color: var(--oruam-accent) !important; border: none !important; }
+
+/* Passwords/Files/URLs/Qr Codes tabs */
+.nav-link {
+  color: var(--oruam-fg-dim) !important;
+}
+.nav-link.active {
+  color: var(--oruam-accent) !important;
+  border-bottom-color: var(--oruam-accent) !important;
+}
+
+/* generic card/panel surfaces */
+.card, .modal-content {
+  background-color: var(--oruam-surface) !important;
+  color: var(--oruam-fg) !important;
+}

@@ -128,6 +128,36 @@ talks to any Password Pusher instance, including this one:
 echo 'my secret' | ./HidePWPushPassword.sh -u https://push.example.com -d 3 -v 1
 ```
 
+## Custom styling
+
+Password Pusher supports theming and branding out of the box, no fork or
+patched image required. This repo ships a `custom.css` (bind-mounted over
+`/opt/PasswordPusher/app/assets/stylesheets/custom.css`, which loads last)
+that re-skins the default Bootstrap look to a dark terminal palette
+(Share Tech Mono / Orbitron fonts, no logo, just the title and tagline), and
+sets a few branding env vars in `docker-compose.yml`:
+
+| Variable | What it does |
+|---|---|
+| `PWP__THEME` | Base Bootswatch skin to start from. Required for assets to precompile on boot, even if you only use `custom.css` |
+| `PWP__THEME_MODE` | `auto` (default), `light`, or `dark` |
+| `PWP__BRAND__TITLE` | Site title shown in the header |
+| `PWP__BRAND__TAGLINE` | Subtitle under the title |
+
+The Bootswatch base themes (including the `slate` one used here) paint
+every `.btn-*` with their own `background-image` gradient on top of
+Bootstrap's own color variables, so a plain color override is not enough:
+`custom.css` also resets `background-image: none` on buttons and a couple
+of other components that have the same gradient.
+
+Edit `custom.css` directly to change colors or fonts, or delete the volume
+line in `docker-compose.yml` to go back to the stock look. See
+[Themes.md](https://github.com/pglombardo/PasswordPusher/blob/master/Themes.md)
+and
+[Configuration.md](https://github.com/pglombardo/PasswordPusher/blob/master/Configuration.md)
+upstream for the full list of theme and branding options, including custom
+logos (`PWP__BRAND__LIGHT_LOGO` / `PWP__BRAND__DARK_LOGO`) and favicons.
+
 ## Updating
 
 ```bash
