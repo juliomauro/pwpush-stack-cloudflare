@@ -160,6 +160,15 @@ somewhere safe, a storage backup is unreadable without it.
   Hostname service address is `pwpush:5100`, not `localhost:5100` or an
   IP address. `cloudflared` resolves `pwpush` through Docker's internal
   network, not the host's.
+- **Container crash-loops with "Permission denied" creating `storage/db`,
+  especially after interacting with the app in a CasaOS/ZimaOS dashboard
+  (for example changing its icon)**: those platforms can recreate the
+  storage directory as root behind the scenes when you touch the app in
+  their UI, which locks out the image's default non-root user. This
+  compose file already runs the container as root (`user: "0:0"`) to avoid
+  it; if you removed that line, put it back, or `chown` the storage
+  directory to match the container's `pwpusher` user (UID 1000) after
+  every such reset.
 - **Links in the app point to the wrong domain**: confirm
   `PWPUSH_DOMAIN` in `.env` matches exactly the hostname you configured in
   the tunnel, then `docker compose up -d` again.

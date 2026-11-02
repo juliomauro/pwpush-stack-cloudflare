@@ -14,6 +14,13 @@ services:
     image: docker.io/pglombardo/pwpush:latest
     restart: unless-stopped
     platform: linux/amd64
+    # the image runs as a non-root "pwpusher" user by default. On platforms
+    # that can recreate the storage directory as root behind your back
+    # (CasaOS/ZimaOS do this when you interact with the app in their
+    # dashboard, for example changing its icon), that user loses write
+    # access and the container crash-loops on "Permission denied" trying
+    # to create storage/db. Running as root sidesteps that entirely.
+    user: "0:0"
     ports:
       - "5100:5100"   # optional local LAN access via http://<host-ip>:5100, remove if not needed
     volumes:
